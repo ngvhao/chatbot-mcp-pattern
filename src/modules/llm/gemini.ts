@@ -2,6 +2,7 @@ import { GoogleGenAI } from '@google/genai';
 import { Injectable } from '@nestjs/common';
 import { adaptToGeminiTools } from 'src/shared/adapters';
 import { LLMTool } from 'src/shared/types';
+import instruction from 'src/shared/utils/instruction';
 import { ToolExecutor } from '../chat/tool-executor';
 import { LLMInterface } from '../llm/llm-interface';
 
@@ -26,11 +27,13 @@ export class GeminiService implements LLMInterface {
       ],
       config: {
         tools: tools && adaptToGeminiTools(tools),
+        systemInstruction: instruction.decisionInstruction,
       },
     });
 
     const candidate = decision.candidates?.[0];
     const part = candidate?.content?.parts?.find((p) => 'functionCall' in p);
+    console.log('Decision candidate:', candidate);
 
     if (!part || !('functionCall' in part)) {
       return (
@@ -47,6 +50,10 @@ export class GeminiService implements LLMInterface {
       functionCall.args ?? {},
     );
 
+    console.log('Tool result:', toolResult);
+    console.log('prompt:', prompt);
+    console.log('part:', part);
+
     const finalResponse = await this.gemini.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: [
@@ -56,10 +63,25 @@ export class GeminiService implements LLMInterface {
         },
         {
           role: 'model',
-          parts: [part, { text: toolResult }],
+          parts: [part],
+        },
+        {
+          role: 'model',
+          parts: [
+            {
+              functionResponse: {
+                name: part.functionCall.name,
+                response: toolResult,
+              },
+            },
+          ],
         },
       ],
+      config: {
+        systemInstruction: instruction.responseInstruction,
+      },
     });
+    console.log('Final response:', finalResponse);
 
     return (
       finalResponse.candidates?.[0]?.content?.parts

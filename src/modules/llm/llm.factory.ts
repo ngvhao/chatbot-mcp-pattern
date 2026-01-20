@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import type { GeminiService } from './gemini';
-import type { OpenAIService } from './openai';
+import { GeminiService } from './gemini';
+import { OpenAIService } from './openai';
 
 @Injectable()
 export class LLMFactory {

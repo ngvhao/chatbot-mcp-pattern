@@ -8,10 +8,10 @@ export class ToolExecutor {
   async execute(toolName: string, _args: any) {
     switch (toolName) {
       case 'getStudentSchedule':
-        return 'Hello world';
+        return { result: 'Thứ 2: Toán, Thứ 3: Lý, Thứ 4: Hóa' };
 
       case 'getTuitionInfo':
-        return 'Hello world';
+        return { result: 'Học phí: 10 triệu VNĐ/ năm' };
 
       default:
         throw new Error(`Tool ${toolName} not allowed`);

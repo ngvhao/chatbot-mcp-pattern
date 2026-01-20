@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { tools } from 'src/shared/utils/tools';
-import type { LLMFactory } from '../llm/llm.factory';
+import { LLMFactory } from '../llm/llm.factory';
 @Injectable()
 export class ChatService {
   constructor(private readonly llmFactory: LLMFactory) {}
