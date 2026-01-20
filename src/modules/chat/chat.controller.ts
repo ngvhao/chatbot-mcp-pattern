@@ -1,21 +1,16 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { GeminiService } from '../llm/gemini';
 import { ChatService } from './chat.service';
-import type { ToolExecutor } from './tool-executor';
 
 @Controller('chat')
 export class ChatController {
-  constructor(
-    private readonly chatService: ChatService,
-    private readonly toolExecutor: ToolExecutor,
-  ) {
-    const LLMService = new GeminiService(this.toolExecutor);
-    chatService = new ChatService(LLMService);
-  }
+  constructor(private readonly chatService: ChatService) {}
 
   @Post()
-  async chat(@Body('question') question: string) {
-    const response = await this.chatService.chat(question);
+  async chat(
+    @Body('question') question: string,
+    @Body('provider') provider: 'gemini' | 'openai',
+  ) {
+    const response = await this.chatService.chat(question, provider);
     return { answer: response };
   }
 }

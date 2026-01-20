@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import OpenAI from 'openai';
 import { adaptToOpenAITools } from 'src/shared/adapters';
-import type { LLMTool } from 'src/shared/types';
-import type { ToolExecutor } from '../chat/tool-executor';
+import { LLMTool } from 'src/shared/types';
+import { ToolExecutor } from '../chat/tool-executor';
 import { LLMInterface } from '../llm/llm-interface';
 
 @Injectable()

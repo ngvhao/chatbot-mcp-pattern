@@ -1,8 +1,8 @@
 import { GoogleGenAI } from '@google/genai';
 import { Injectable } from '@nestjs/common';
 import { adaptToGeminiTools } from 'src/shared/adapters';
-import type { LLMTool } from 'src/shared/types';
-import type { ToolExecutor } from '../chat/tool-executor';
+import { LLMTool } from 'src/shared/types';
+import { ToolExecutor } from '../chat/tool-executor';
 import { LLMInterface } from '../llm/llm-interface';
 
 @Injectable()

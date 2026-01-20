@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { tools } from 'src/shared/utils/tools';
-import type { LLMInterface } from '../llm/llm-interface';
+import type { LLMFactory } from '../llm/llm.factory';
 @Injectable()
 export class ChatService {
-  constructor(private readonly LLMService: LLMInterface) {}
+  constructor(private readonly llmFactory: LLMFactory) {}
 
-  async chat(question: string) {
-    const response = await this.LLMService.generateResponse(question, tools);
-    return response;
+  async chat(question: string, provider: 'gemini' | 'openai') {
+    const llm = this.llmFactory.get(provider);
+    return llm.generateResponse(question, tools);
   }
 }
