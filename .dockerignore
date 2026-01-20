@@ -1,0 +1,12 @@
+.git
+.gitignore
+.env*
+.vscode
+.husky
+.github
+.prettierrc
+.eslintrc.js
+.eslintignore
+.eslintrc.js
+node_modules
+dist
